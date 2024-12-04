@@ -1,0 +1,14 @@
+C:\Users\jaylj\source\repos\Concert\Concert\bin\Debug\net8.0\Concert.exe
+C:\Users\jaylj\source\repos\Concert\Concert\bin\Debug\net8.0\Concert.deps.json
+C:\Users\jaylj\source\repos\Concert\Concert\bin\Debug\net8.0\Concert.runtimeconfig.json
+C:\Users\jaylj\source\repos\Concert\Concert\bin\Debug\net8.0\Concert.dll
+C:\Users\jaylj\source\repos\Concert\Concert\bin\Debug\net8.0\Concert.pdb
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.AssemblyInfoInputs.cache
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.AssemblyInfo.cs
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.csproj.CoreCompileInputs.cache
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.dll
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\refint\Concert.dll
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.pdb
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.genruntimeconfig.cache
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\ref\Concert.dll
