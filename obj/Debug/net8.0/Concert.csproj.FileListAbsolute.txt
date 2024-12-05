@@ -12,3 +12,4 @@ C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\refint\Concert.dll
 C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.pdb
 C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.genruntimeconfig.cache
 C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\ref\Concert.dll
+C:\Users\jaylj\source\repos\Concert\Concert\obj\Debug\net8.0\Concert.sourcelink.json

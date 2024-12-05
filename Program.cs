@@ -1,99 +1,167 @@
-﻿using System;
-public class Program
-{
-    static string concertName = "Toto";
-    static DateTime concertDate = new DateTime(2025, 2, 26, 19, 30, 0);
-    static string concertVenue = "Göteborg";
-    static int availableTickets = 500;
+﻿
 
-    public static void Main(string[] args)
+class TicketSystemApp
+{
+    static List<Concert> concerts = new List<Concert>();
+    static string filePath = "concerts.txt";
+    static void Main(string[] args)
     {
+        LoadConcerts();
+        InitializeConcerts();
         bool running = true;
         while (running)
         {
-            Console.Clear();
-            Console.WriteLine("Options");
-            Console.WriteLine("1. View Concert");
-            Console.WriteLine("2. Upadate Concert");
-            Console.WriteLine("3. Remove Concert");
-            Console.WriteLine("4. Exit");
-            string option = Console.ReadLine();
-
-            switch (option)
+            DisplayMenu();
+            string choice = Console.ReadLine();
+            switch (choice)
             {
                 case "1":
-                    ViewConcert();
+                    AddConcert();
                     break;
-                case "2":
-                    UpdateConcert();
+                    case "2":
+                    ListConcerts();
                     break;
-                case "3":
-                    RemoveConcert();
+                    case "3":
+                    EditConcert();
                     break;
-                case "4":
-                    running = false;
+                    case "4":
+                    DeleteConcert();
+                    break;
+                    case "5":
+                        running = false;
                     break;
                 default:
-                    Console.WriteLine("Please try again");
+                    Console.WriteLine("Invalid option! Please try again.");
                     break;
             }
         }
+        SaveConcerts();
 
     }
 
-
-    public static void ViewConcert()
+    static void DisplayMenu()
     {
         Console.Clear();
-        if (string.IsNullOrEmpty(concertName))
-        {
-            Console.WriteLine("No Concert available");
-        }
-        else
-        {
-            Console.WriteLine("Concert Details:");
-            Console.WriteLine($"Band: {concertName}");
-            Console.WriteLine($"Date: {concertDate}");
-            Console.WriteLine($"Venue: {concertVenue}");
-            Console.WriteLine($"Tickets Available: {availableTickets}");
-        }
-        Console.ReadKey();
+        Console.WriteLine("=== Concert Ticket System ===");
+        Console.WriteLine("1. Add new concert");
+        Console.WriteLine("2. List all concerts");
+        Console.WriteLine("3. Edit a concert");
+        Console.WriteLine("4. Delete a concert");
+        Console.WriteLine("5. Exit");
+        Console.Write("Please choose an option: ");
     }
-    public static void UpdateConcert()
+
+    static void AddConcert()
     {
         Console.Clear();
-        Console.WriteLine($"Updating concert: {concertName} in {concertVenue} on {concertDate}");
-        Console.Write("Toto");
+        Console.Write("Enter concert name: ");
         string name = Console.ReadLine();
-        if (!string.IsNullOrEmpty(name)) concertName = name;
-        Console.Write("Göteborg");
-        string dateSTR = Console.ReadLine();
-        if (!string.IsNullOrEmpty(dateSTR)) concertDate = DateTime.Parse(dateSTR);
-        Console.Write("2025-02-26");
+        Console.Write("Enter concert venue ");
         string venue = Console.ReadLine();
-        if (string.IsNullOrEmpty(venue)) concertVenue = venue;
-        Console.Write("Press enter to confirm ticket");
-        string ticketStr = Console.ReadLine();
-        if (!String.IsNullOrEmpty(ticketStr)) availableTickets = int.Parse(ticketStr);
-        Console.ReadKey();
+        Console.Write("Enter concert date (MM/dd/yyyy HH:mm): ");
+        DateTime date;
+
+        while (!DateTime.TryParse(Console.ReadLine(), out date))
+        {
+            Console.Write("Invalid date. Please enter the date in MM/dd/yyyy HH:mm format: ");
+        }
+        concerts.Add(new Concert(name, venue, date));
+        Console.WriteLine("Concert added successfully!");
+        Console.ReadLine();
     }
-    public static void RemoveConcert()
+    static void ListConcerts()
     {
         Console.Clear();
-        if (!string.IsNullOrEmpty(concertName))
+        if (concerts.Count == 0)
         {
-            Console.WriteLine("No consert to remove.");
+            Console.WriteLine("No concerts available.");
         }
         else
         {
-            concertName = "";
-            concertDate = DateTime.MinValue;
-            concertVenue = "";
-            availableTickets = 0;
-            Console.WriteLine("Concert successfully removed.");
+            foreach (var concert in concerts)
             {
-                Console.ReadKey();
+                concert.Display();
             }
         }
+        Console.ReadLine();
     }
+    static void EditConcert()      
+    {
+        Console.Clear();
+        Console.Write("Enter the concert name to edit: ");
+        string name = Console.ReadLine();
+
+        var concert = concerts.Find(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+        if (concert != null)
+        {
+            Console.WriteLine($"Editing concert: {concert.Name}");
+            Console.Write("Enter new venue (leave blank to keep current): ");
+            string venue = Console.ReadLine();
+            if (!string.IsNullOrEmpty(venue)) concert.Venue = venue;
+
+            Console.Write("Enter new date (leave blank to keep current): ");
+            string dateInput = Console.ReadLine();
+            if (!string.IsNullOrEmpty(dateInput) && DateTime.TryParse(dateInput, out DateTime newDate))
+            {
+                concert.Date = newDate;
+            }
+            Console.WriteLine("Concert updated successfully!");
+        }
+        else
+        {
+            Console.WriteLine("Concert not found.");
+        }
+            Console.ReadLine();
+        }
+        static void DeleteConcert()
+        {
+            Console.Clear();
+            Console.Write("Enter the concert name to delete; ");
+            string name = Console.ReadLine();
+
+            var concert = concerts.Find(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            if (concert != null)
+            {
+                concerts.Remove(concert);
+                Console.WriteLine("Concerts deleted successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Concert not found");
+            }
+            Console.ReadLine();
+        }
+        static void SaveConcerts()
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var concert in concerts)
+                {
+                    writer.WriteLine($"{concert.Name},{concert.Venue},{concert.Date.ToString("MM/dd/yyyy HH:mm")}");
+                }
+            }
+         }
+            static void LoadConcerts()
+            {
+                if (File.Exists(filePath))
+                {
+                    foreach (var line in File.ReadAllLines(filePath))
+                    {
+                        var parts = line.Split(',');
+                        if (parts.Length == 3 && DateTime.TryParse(parts[2], out DateTime date))
+                        {
+                            concerts.Add(new Concert(parts[0], parts[1], date));
+                        }
+                    }
+                }
+            }
+            static void InitializeConcerts()
+            {
+                concerts.Add(new Concert("Toto", "Göteborg", new DateTime(2025, 2, 26, 19, 30, 0)));
+                concerts.Add(new Concert("Roxette", "Göteborg", new DateTime(2025, 7, 23, 19, 30, 0)));                
+                concerts.Add(new Concert("Hans Zimmer", "Göteborg", new DateTime(2025, 3, 6, 19, 30, 0)));
+
+                Console.WriteLine("My favorite concerts added!");
+                Console.ReadLine();
+            }
 }
